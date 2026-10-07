@@ -1,8 +1,6 @@
-# Paper Terminal — stock trading simulator
+# Goytrading - A stock trading simulator (Vibecode)
 
-Simulation / paper trading only. No real trades, no real money, all prices and news are fictional.
-
-Everything lives in one static file (`index.html`), with no build step, no backend and no external requests.
+Simulation / No real trades, no real money, all prices and news are fictional.
 
 ## Host on GitHub Pages
 1. Create a new GitHub repository and upload `index.html`, `.nojekyll` and this README.
