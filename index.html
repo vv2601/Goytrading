@@ -1,63 +1,99 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Paper Terminal — Simulation</title>
+<title>Tel-Aviv Terminal — Simulation</title>
 <style>
-:root{--bg:#0a0c0f;--pn:#10141a;--pn2:#161b22;--bd:#242b35;--tx:#c8d0da;--dim:#6c7787;--up:#2fbf71;--dn:#e5484d;--ac:#e0a526;--blue:#4c8dff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a0c0f}}
-:root[data-theme="dark"]{--bg:#0a0c0f}
+:root{--bg:#e9eff8;--pn:#ffffff;--pn2:#f1f5fb;--bd:#c9d6ea;--tx:#12264d;--dim:#6479a0;--up:#14935a;--dn:#d12f3a;--ac:#0038b8;--blue:#0038b8;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#e9eff8}}
+:root[data-theme="dark"]{--bg:#e9eff8}
 *{box-sizing:border-box}html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--tx);font:11px/1.35 "IBM Plex Sans","Segoe UI",system-ui,sans-serif;overflow:hidden}
 .n,td.r,.num{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
 #app{display:flex;flex-direction:column;height:100%}
-.top{display:flex;align-items:center;gap:8px;padding:4px 8px;background:var(--pn);border-bottom:1px solid var(--bd);flex-wrap:wrap}
-.brand{font-weight:600;letter-spacing:.02em;color:#fff}
-.sim{background:#3a2a05;color:var(--ac);border:1px solid #6b4d0a;padding:2px 8px;font-weight:600}
+.top{display:flex;align-items:center;gap:8px;padding:4px 8px;background:var(--pn);border-bottom:3px solid #0038b8;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:7px;font-size:14px;font-weight:700;letter-spacing:.01em;color:#0038b8}.fl{display:block}[hidden]{display:none!important}
+.sim{background:#0038b8;color:#fff;border:1px solid #0038b8;padding:2px 8px;font-weight:600}
 .sp{flex:1}
 button,select,input{background:var(--pn2);color:var(--tx);border:1px solid var(--bd);border-radius:2px;font:inherit;padding:2px 7px;height:22px}
-button{cursor:pointer}button:hover{background:#1f2630}button.on{background:#25344d;border-color:var(--blue);color:#fff}
+button{cursor:pointer}button:hover{background:#e2ebf8}button.on{background:#0038b8;border-color:#0038b8;color:#fff}
 button:focus-visible,select:focus-visible,input:focus-visible{outline:1px solid var(--blue)}
 input{width:100%}
-.clock{font-size:15px;color:#fff;min-width:68px;text-align:right}
+.clock{font-size:15px;color:#0038b8;min-width:68px;text-align:right}
 .pill{padding:1px 7px;border:1px solid var(--bd);border-radius:2px}
-.pill.Regular{color:var(--up);border-color:#1d5a3a}.pill.Closed{color:var(--dn)}.pill.Pre,.pill.After{color:var(--ac)}
+.pill.Regular{color:var(--up);border-color:#9bd6b8}.pill.Closed{color:var(--dn)}.pill.Pre,.pill.After{color:var(--ac)}
 .grid{flex:1;min-height:0;display:grid;gap:3px;padding:3px;grid-template-columns:272px 1fr 410px;grid-template-rows:236px 1fr 232px;grid-template-areas:"oe ch wl" "info ch news" "act act pf"}
 .pn{background:var(--pn);border:1px solid var(--bd);display:flex;flex-direction:column;min-height:0;min-width:0}
 .hd{display:flex;align-items:center;gap:4px;padding:3px 6px;border-bottom:1px solid var(--bd);background:var(--pn2);flex-wrap:wrap}
-.hd b{font-weight:600;color:#fff;margin-right:4px}.hd .tag{color:var(--ac);font-size:10px}
+.hd b{font-weight:600;color:#0038b8;margin-right:4px}.hd .tag{color:var(--ac);font-size:10px}
 .bd{padding:6px;overflow:auto;min-height:0;flex:1}
 table{border-collapse:collapse;width:100%}th{color:var(--dim);font-weight:400;text-align:right;padding:2px 6px;position:sticky;top:0;background:var(--pn)}
-th:first-child,td:first-child{text-align:left}td{padding:2px 6px;text-align:right;border-top:1px solid #151a21;white-space:nowrap}
-tr.row{cursor:pointer}tr.row:hover td{background:#171d26}tr.sel td{background:#1b2535}
-.up{color:var(--up)}.dn{color:var(--dn)}.cu{background:#12331f}.cd{background:#3a1517}
+th:first-child,td:first-child{text-align:left}td{padding:2px 6px;text-align:right;border-top:1px solid #e3eaf5;white-space:nowrap}
+tr.row{cursor:pointer}tr.row:hover td{background:#eef3fb}tr.sel td{background:#dce8fa}
+.up{color:var(--up)}.dn{color:var(--dn)}.cu{background:#dff3e8}.cd{background:#fbe1e3}
 .f{display:grid;grid-template-columns:62px 1fr;gap:4px 6px;align-items:center}.f label{color:var(--dim)}
-.bs{display:flex}.bs button{flex:1;height:24px}.bs .b.on{background:#14532d;border-color:var(--up)}.bs .s.on{background:#5a1a1d;border-color:var(--dn)}
-.sub{width:100%;height:26px;margin-top:6px;font-weight:600}.sub.B{background:#14532d;border-color:var(--up);color:#fff}.sub.S{background:#5a1a1d;border-color:var(--dn);color:#fff}
-.kv{display:flex;justify-content:space-between;padding:1px 0;border-bottom:1px solid #151a21}.kv span:first-child{color:var(--dim)}
+.bs{display:flex}.bs button{flex:1;height:24px}.bs .b.on{background:var(--up);border-color:var(--up);color:#fff}.bs .s.on{background:var(--dn);border-color:var(--dn);color:#fff}
+.sub{width:100%;height:26px;margin-top:6px;font-weight:600}.sub.B{background:var(--up);border-color:var(--up);color:#fff}.sub.S{background:var(--dn);border-color:var(--dn);color:#fff}
+.kv{display:flex;justify-content:space-between;padding:1px 0;border-bottom:1px solid #e3eaf5}.kv span:first-child{color:var(--dim)}
 .sec{color:var(--ac);margin:6px 0 2px;font-size:10px}
 #ch .bd{padding:0;position:relative;overflow:hidden}#cv{width:100%;height:100%;display:block;cursor:crosshair}
-#ohlc{position:absolute;left:8px;top:4px;pointer-events:none;color:var(--tx);background:#0a0c0fcc;padding:1px 4px}
-.news div{display:flex;gap:6px;padding:2px 0;border-bottom:1px solid #151a21}.news time{color:var(--dim);min-width:38px}
-.tabs{display:flex;gap:1px}.tabs button{border:0;background:none;color:var(--dim);border-bottom:2px solid transparent;border-radius:0}.tabs button.on{color:#fff;border-bottom-color:var(--blue);background:none}
+#ohlc{position:absolute;left:8px;top:4px;pointer-events:none;color:var(--tx);background:#ffffffdd;padding:1px 4px}
+.news div{display:flex;gap:6px;padding:2px 0;border-bottom:1px solid #e3eaf5}.news time{color:var(--dim);min-width:38px}
+.tabs{display:flex;gap:1px}.tabs button{border:0;background:none;color:var(--dim);border-bottom:2px solid transparent;border-radius:0}.tabs button.on{color:#0038b8;border-bottom-color:var(--blue);background:none}
 .x{color:var(--dim);cursor:pointer;padding:0 3px}.x:hover{color:var(--dn)}
 #toasts{position:fixed;right:8px;top:calc(34px + env(safe-area-inset-top,0px));z-index:9;display:flex;flex-direction:column;gap:3px;pointer-events:none}
-.toast{background:#161b22;border:1px solid var(--bd);border-left:3px solid var(--blue);padding:4px 8px;min-width:200px}
+.toast{background:#fff;border:1px solid var(--bd);border-left:3px solid var(--blue);padding:4px 8px;min-width:200px}
 .toast.up{border-left-color:var(--up)}.toast.dn{border-left-color:var(--dn)}.toast.am{border-left-color:var(--ac)}
-.empty{color:var(--dim);padding:10px;text-align:center}
+#dm{position:fixed;right:8px;top:calc(38px + env(safe-area-inset-top,0px));z-index:10;width:310px;background:#fff;border:1px solid var(--bd);box-shadow:0 6px 20px #0038b82e;padding:8px 10px}#dm h4{margin:8px 0 3px;color:var(--ac);font-size:11px}#dm button{margin:2px 4px 2px 0}#dst{margin-top:4px;color:var(--dim);min-height:14px}.empty{color:var(--dim);padding:10px;text-align:center}
 @media (max-width:1000px){body{overflow:auto}#app{height:auto}.grid{display:flex;flex-direction:column}.pn{min-height:260px}#ch{min-height:380px}}
+
+/* Dark terminal body with a white top header */
+
+/* Workspace controls */
+.pctrl{margin-left:auto;display:flex;gap:2px;align-items:center}.pctrl button{width:22px;height:20px;padding:0;font-size:13px;line-height:18px}.pname{font-weight:600;color:#8fb9ff;margin-right:4px}.pn.minimized{min-height:0}.pn.minimized .bd{display:none}.pn.minimized .hd{border-bottom:0}.pn.swap-source{outline:2px solid #6ea8ff;outline-offset:-2px}.pn.swap-target{outline:2px dashed #28c77a;outline-offset:-2px}.panel-hidden{display:none!important}.panel-manager{position:fixed;top:52px;right:8px;width:290px;max-height:70vh;overflow:auto;background:#111923;border:1px solid #2a394b;box-shadow:0 10px 30px #0009;padding:8px;z-index:20;border-radius:6px}.panel-manager h3{margin:0 0 7px;color:#8fb9ff;font-size:13px}.panel-row{display:flex;align-items:center;gap:5px;padding:5px 0;border-bottom:1px solid #243243}.panel-row:last-child{border-bottom:0}.panel-row .pnm{flex:1}.panel-row button{padding:2px 7px}.panel-hint{font-size:10px;color:#8fa1b7;margin-top:7px;line-height:1.35}
+
+:root{--bg:#0b1118;--pn:#111923;--pn2:#182330;--bd:#2a394b;--tx:#e7edf5;--dim:#8fa1b7;--up:#28c77a;--dn:#ff5c68;--ac:#6ea8ff;--blue:#4c8dff}
+body{background:var(--bg);color:var(--tx)}
+.top{background:#fff;color:#12264d;border-bottom:3px solid #0038b8}.top .brand{color:#0038b8}.top button,.top select,.top input{background:#f1f5fb;color:#12264d;border-color:#c9d6ea}.top button:hover{background:#e2ebf8}.top .clock{color:#0038b8}
+body.light{--bg:#e9eff8;--pn:#fff;--pn2:#f1f5fb;--bd:#c9d6ea;--tx:#12264d;--dim:#6479a0;--up:#14935a;--dn:#d12f3a;--ac:#0038b8;--blue:#0038b8}body.light .top{background:#fff;color:#12264d;border-bottom-color:#0038b8}body.light .top .brand,body.light .top .clock{color:#0038b8}body.light .top button,body.light .top select,body.light .top input{background:#f1f5fb;color:#12264d;border-color:#c9d6ea}body.light .top button:hover{background:#e2ebf8}body.light button,body.light select,body.light input{background:#fff;color:#12264d;border-color:#c9d6ea}body.light button:hover{background:#e2ebf8}body.light th{background:#fff;color:#6479a0}body.light td{border-top-color:#e3eaf5}body.light tr.row:hover td{background:#f4f7fb}body.light tr.sel td{background:#e7effc}body.light .cu{background:#e1f5ec}body.light .cd{background:#fbe1e3}body.light .kv,body.light .news div{border-bottom-color:#e3eaf5}body.light .tabs button{color:#6479a0}body.light .tabs button.on{color:#0038b8;border-bottom-color:#0038b8}body.light #ohlc{background:#ffffffdd;color:#12264d}body.light .toast{background:#fff;border-color:#c9d6ea}body.light #dm{background:#fff;border-color:#c9d6ea;box-shadow:0 6px 20px #0038b82e}body.light .panel-manager{background:#fff;border-color:#c9d6ea}body.light .panel-row{border-bottom-color:#e3eaf5}body.light .panel-hint{color:#6479a0}
+balance-box{display:flex;align-items:center;gap:4px;margin-left:4px}.balance-box input{width:105px}.theme-btn{font-weight:600}
+.grid{background:var(--bg)}.pn{background:var(--pn);border-color:var(--bd)}.hd{background:var(--pn2);border-color:var(--bd)}.hd b{color:#8fb9ff}.bd{background:var(--pn)}
+button,select,input{background:var(--pn2);color:var(--tx);border-color:var(--bd)}button:hover{background:#223144}button.on{background:#315f9e;border-color:#4c8dff;color:#fff}
+th{background:var(--pn);color:var(--dim)}td{border-top-color:#243243}tr.row:hover td{background:#1a2837}tr.sel td{background:#203754}.cu{background:#123a2b}.cd{background:#44232a}.kv{border-bottom-color:#243243}.news div{border-bottom-color:#243243}.tabs button{color:var(--dim)}.tabs button.on{color:#8fb9ff;border-bottom-color:var(--blue)}#ohlc{background:#111923dd;color:var(--tx)}.toast{background:#111923;border-color:var(--bd)}#dm{background:#111923;border-color:var(--bd);box-shadow:0 6px 20px #0008}
+
+/* Final theme behavior: dark mode covers the entire application, including the header and workspace gaps. */
+body:not(.light){background:#0b1118;color:#e7edf5}
+body:not(.light) .top{background:#0b1118;color:#e7edf5;border-bottom-color:#2f6fd6}
+body:not(.light) .top .brand,body:not(.light) .top .clock{color:#8fb9ff}
+body:not(.light) .top button,body:not(.light) .top select,body:not(.light) .top input{background:#182330;color:#e7edf5;border-color:#2a394b}
+body:not(.light) .top button:hover{background:#223144}
+body:not(.light) .grid{background:#0b1118}
+body:not(.light) .pn{background:#111923;border-color:#2a394b}
+body:not(.light) .hd{background:#182330;border-color:#2a394b}
+body:not(.light) .bd{background:#111923}
+body:not(.light) button,body:not(.light) select,body:not(.light) input{background:#182330;color:#e7edf5;border-color:#2a394b}
+body:not(.light) button:hover{background:#223144}
+body:not(.light) .panel-manager{background:#111923;border-color:#2a394b}
+body:not(.light) #dm{background:#111923;border-color:#2a394b}
+body:not(.light) .toast{background:#111923;border-color:#2a394b}
+body:not(.light) #ohlc{background:#111923dd}
+body.light .grid{background:#e9eff8}
+body.light .pn{background:#fff;border-color:#c9d6ea}
+body.light .hd{background:#f1f5fb;border-color:#c9d6ea}
+body.light .bd{background:#fff}
+
 </style></head><body>
 <div id="app">
 <div class="top">
- <span class="brand">PAPER TERMINAL</span><span class="sim">SIMULATION MODE — NO REAL TRADES</span>
+ <span class="brand"><svg class="fl" viewBox="0 0 22 16" width="24" height="17" aria-label="Flag of Israel"><rect width="22" height="16" fill="#fff" stroke="#0038b8" stroke-width=".6"/><rect y="1.6" width="22" height="2" fill="#0038b8"/><rect y="12.4" width="22" height="2" fill="#0038b8"/><polygon points="11,4.6 13.94,9.7 8.06,9.7" fill="none" stroke="#0038b8" stroke-width=".7"/><polygon points="11,11.4 13.94,6.3 8.06,6.3" fill="none" stroke="#0038b8" stroke-width=".7"/></svg> Tel-Aviv Terminal <svg class="fl" viewBox="0 0 22 16" width="24" height="17" aria-label="Flag of Israel"><rect width="22" height="16" fill="#fff" stroke="#0038b8" stroke-width=".6"/><rect y="1.6" width="22" height="2" fill="#0038b8"/><rect y="12.4" width="22" height="2" fill="#0038b8"/><polygon points="11,4.6 13.94,9.7 8.06,9.7" fill="none" stroke="#0038b8" stroke-width=".7"/><polygon points="11,11.4 13.94,6.3 8.06,6.3" fill="none" stroke="#0038b8" stroke-width=".7"/></svg></span>
  <input id="q" placeholder="Search symbol (Ctrl+K)" style="width:170px" autocomplete="off"><span id="qr" class="n" style="color:var(--dim)"></span>
  <span class="sp"></span>
  <span id="ses" class="pill"></span>
  <select id="spd" title="Simulation speed"><option>1</option><option>2</option><option>5</option><option>10</option><option>50</option><option>100</option></select>
  <button id="pz">Pause</button><button id="nd">New day</button><button id="rs">Reset market</button>
- <span id="clk" class="clock n"></span>
+ <button id="dt">Save / Sync</button><span class="balance-box"><span>Balance</span><input id="bal" type="number" min="0" step="0.01" title="Set virtual starting cash"><button id="setbal">Set</button></span><button id="panels">Panels</button><button id="theme" class="theme-btn">Dark Mode</button><span id="clk" class="clock n"></span>
 </div>
 <div class="grid">
- <section class="pn" id="oe" style="grid-area:oe"><div class="hd"><b id="oes">AAPL</b><span class="tag">Order entry · paper</span><span class="sp"></span><span class="n" id="oepos" style="color:var(--dim)"></span></div>
+ <section class="pn" id="oe" data-panel="oe" style="grid-area:oe"><div class="hd"><span class="pname">Order Entry</span><span class="pctrl"><button class="pmin" title="Minimize panel">−</button><button class="pswap" title="Swap panel">↔</button></span><b id="oes">AAPL</b><span class="tag">Order entry · paper</span><span class="sp"></span><span class="n" id="oepos" style="color:var(--dim)"></span></div>
   <div class="bd">
    <div class="n" style="display:flex;justify-content:space-between;margin-bottom:5px"><span>Bid <b id="obid" class="up" style="cursor:pointer"></b></span><span>Ask <b id="oask" class="dn" style="cursor:pointer"></b></span></div>
    <div class="bs"><button class="b on" id="bb">Buy</button><button class="s" id="bs">Sell</button></div>
@@ -71,15 +107,40 @@ tr.row{cursor:pointer}tr.row:hover td{background:#171d26}tr.sel td{background:#1
    <div class="kv n" style="margin-top:6px"><span>Est. value</span><span id="oev"></span></div><div class="kv n"><span>Est. commission</span><span id="oec"></span></div><div class="kv n"><span>Est. profit if sold</span><span id="oep"></span></div>
    <button class="sub B" id="sub">Submit Buy</button>
   </div></section>
- <section class="pn" id="ch" style="grid-area:ch"><div class="hd" id="cht"></div><div class="bd"><canvas id="cv"></canvas><div id="ohlc" class="n"></div></div></section>
- <section class="pn" id="wl" style="grid-area:wl"><div class="hd"><b>Watchlist</b><input id="wa" placeholder="Add symbol" style="width:90px"><span class="sp"></span><span class="tag">Simulated prices</span></div><div class="bd" style="padding:0"><table id="wt"></table></div></section>
- <section class="pn" id="info" style="grid-area:info"><div class="hd"><b id="is">AAPL</b><span class="tag">Simulated data</span></div><div class="bd" id="ib"></div></section>
- <section class="pn" id="news" style="grid-area:news"><div class="hd"><b>News</b><span class="tag">SIMULATED NEWS — not real</span></div><div class="bd news" id="nb"></div></section>
- <section class="pn" id="act" style="grid-area:act"><div class="hd"><div class="tabs" id="tabs"><button data-t="o" class="on">Orders</button><button data-t="t">Trades</button><button data-t="a">Activity</button></div></div><div class="bd" style="padding:0" id="ab"></div></section>
- <section class="pn" id="pf" style="grid-area:pf"><div class="hd"><b>Portfolio</b><span class="sp"></span><button id="ra">Reset account</button></div><div class="bd" id="pb"></div></section>
+ <section class="pn" id="ch" data-panel="ch" style="grid-area:ch"><div class="hd" id="cht"><span class="pname">Chart</span><span class="pctrl"><button class="pmin" title="Minimize panel">−</button><button class="pswap" title="Swap panel">↔</button></span></div><div class="bd"><canvas id="cv"></canvas><div id="ohlc" class="n"></div></div></section>
+ <section class="pn" id="wl" data-panel="wl" style="grid-area:wl"><div class="hd"><b>Watchlist</b><input id="wa" placeholder="Add symbol" style="width:90px"><span class="sp"></span>/span><span class="pctrl"><button class="pmin" title="Minimize panel">−</button><button class="pswap" title="Swap panel">↔</button></span></div><div class="bd" style="padding:0"><table id="wt"></table></div></section>
+ <section class="pn" id="info" data-panel="info" style="grid-area:info"><div class="hd"><b id="is">AAPL</b></span><span class="pctrl"><button class="pmin" title="Minimize panel">−</button><button class="pswap" title="Swap panel">↔</button></span></div><div class="bd" id="ib"></div></section>
+ <section class="pn" id="news" data-panel="news" style="grid-area:news"><div class="hd"><b>News</b></span><span class="pctrl"><button class="pmin" title="Minimize panel">−</button><button class="pswap" title="Swap panel">↔</button></span></div><div class="bd news" id="nb"></div></section>
+ <section class="pn" id="act" data-panel="act" style="grid-area:act"><div class="hd"><div class="tabs" id="tabs"><button data-t="o" class="on">Orders</button><button data-t="t">Trades</button><button data-t="a">Activity</button></div><span class="pctrl"><button class="pmin" title="Minimize panel">−</button><button class="pswap" title="Swap panel">↔</button></span></div><div class="bd" style="padding:0" id="ab"></div></section>
+ <section class="pn" id="pf" data-panel="pf" style="grid-area:pf"><div class="hd"><b>Portfolio</b><span class="sp"></span><button id="ra">Reset account</button><span class="pctrl"><button class="pmin" title="Minimize panel">−</button><button class="pswap" title="Swap panel">↔</button></span></div><div class="bd" id="pb"></div></section>
 </div></div>
 <div id="toasts"></div>
+<div id="dm" hidden><b style="color:#0038b8">Save your data</b><div style="color:var(--dim)">Progress is kept automatically in this browser. Use these to back it up or move it to another device.</div>
+<h4>Save file</h4><button id="ex">Export file</button><button id="im">Import file</button><input type="file" id="imf" accept=".json" hidden>
+<h4>Cloud save (private GitHub Gist)</h4><input id="tok" type="password" placeholder="GitHub token (gist scope only)" autocomplete="off"><input id="gid" placeholder="Gist ID (filled in after first save)" style="margin-top:3px" autocomplete="off">
+<button id="cs">Save to cloud</button><button id="cl">Load from cloud</button><div id="dst" class="n"></div></div>
 <script>
+// Panel workspace controls: minimize, hide/restore, and swap panel positions.
+const PANEL_NAMES={oe:'Order Entry',ch:'Chart',wl:'Watchlist',info:'Info',news:'News',act:'Orders / Trades / Activity',pf:'Portfolio'};
+const panelIds=Object.keys(PANEL_NAMES);let swapSource=null;
+function panelEl(id){return document.getElementById(id)}
+function setPanelArea(id,area){panelEl(id).style.gridArea=area}
+function clearSwap(){document.querySelectorAll('.swap-source,.swap-target').forEach(x=>x.classList.remove('swap-source','swap-target'));swapSource=null}
+function saveWorkspace(){localStorage.setItem('terminalPanelLayout',JSON.stringify(panelIds.reduce((o,id)=>(o[id]=panelEl(id).style.gridArea||id,o),{})));localStorage.setItem('terminalPanelMin',JSON.stringify(panelIds.filter(id=>panelEl(id).classList.contains('minimized'))));localStorage.setItem('terminalPanelHidden',JSON.stringify(panelIds.filter(id=>panelEl(id).classList.contains('panel-hidden'))))}
+function swapPanels(a,b){if(a===b)return;const aa=panelEl(a).style.gridArea||a,bb=panelEl(b).style.gridArea||b;setPanelArea(a,bb);setPanelArea(b,aa);saveWorkspace();clearSwap()}
+function toggleMin(id){panelEl(id).classList.toggle('minimized');saveWorkspace();renderPanelManager()}
+function hidePanel(id){panelEl(id).classList.add('panel-hidden');saveWorkspace();renderPanelManager()}
+function showPanel(id){panelEl(id).classList.remove('panel-hidden','minimized');saveWorkspace();renderPanelManager()}
+function renderPanelManager(){const m=document.querySelector('.panel-manager');if(!m)return;m.innerHTML='<h3>Workspace panels</h3>';panelIds.forEach(id=>{const el=panelEl(id),row=document.createElement('div');row.className='panel-row';const n=document.createElement('span');n.className='pnm';n.textContent=PANEL_NAMES[id];row.append(n);if(el.classList.contains('panel-hidden')){const b=document.createElement('button');b.textContent='Restore';b.onclick=()=>showPanel(id);row.append(b)}else{const b=document.createElement('button');b.textContent=el.classList.contains('minimized')?'Expand':'Minimize';b.onclick=()=>toggleMin(id);const h=document.createElement('button');h.textContent='Hide';h.onclick=()=>hidePanel(id);row.append(b,h)}m.append(row)});const hint=document.createElement('div');hint.className='panel-hint';hint.textContent='Use ↔ on a panel, then click another panel to swap their positions.';m.append(hint)}
+function initPanels(){
+ const saved=JSON.parse(localStorage.getItem('terminalPanelLayout')||'null');if(saved)panelIds.forEach(id=>saved[id]&&setPanelArea(id,saved[id]));
+ const mins=JSON.parse(localStorage.getItem('terminalPanelMin')||'[]');mins.forEach(id=>panelEl(id)?.classList.add('minimized'));
+ const hidden=JSON.parse(localStorage.getItem('terminalPanelHidden')||'[]');hidden.forEach(id=>panelEl(id)?.classList.add('panel-hidden'));
+ const grid=document.querySelector('.grid');
+ grid.addEventListener('click',e=>{const min=e.target.closest('.pmin'),sw=e.target.closest('.pswap');if(min){e.stopPropagation();toggleMin(min.closest('.pn').id);return}if(sw){e.stopPropagation();clearSwap();swapSource=sw.closest('.pn').id;panelEl(swapSource).classList.add('swap-source');document.querySelectorAll('.pn:not(.panel-hidden)').forEach(p=>{if(p.id!==swapSource)p.classList.add('swap-target')});return}if(swapSource){const p=e.target.closest('.pn');if(p&&p.id!==swapSource&&!p.classList.contains('panel-hidden'))swapPanels(swapSource,p.id)}});
+ const btn=document.getElementById('panels');if(btn){btn.onclick=e=>{e.stopPropagation();let m=document.querySelector('.panel-manager');if(!m){m=document.createElement('div');m.className='panel-manager';document.body.append(m)}renderPanelManager();m.hidden=!m.hidden};document.addEventListener('click',e=>{const m=document.querySelector('.panel-manager');if(m&&!m.hidden&&!m.contains(e.target)&&e.target!==btn)m.hidden=true})}
+}
+
 const $=s=>document.querySelector(s),g=()=>{let u=0;while(!u)u=Math.random();return Math.sqrt(-2*Math.log(u))*Math.cos(6.283*Math.random())};
 const SY={AAPL:{n:'Apple',p:228,sh:15.2e9,eps:6.1,bv:4.2,avg:52e6,sv:1},MSFT:{n:'Microsoft',p:415,sh:7.43e9,eps:11.8,bv:13,avg:21e6,sv:.85},NVDA:{n:'NVIDIA',p:132,sh:24.4e9,eps:2.6,bv:2.1,avg:230e6,sv:1.6}};
 const sg=n=>(n>=0?'+':'-')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}),f2=n=>n.toFixed(2),r2=n=>Math.round(n*100)/100,fs=n=>(n>=0?'+':'')+f2(n),$$=n=>'$'+n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -119,7 +180,10 @@ function submit(){const s=S.sel,o=S.mk[s],q=Math.floor(+$('#oq').value),t=$('#ot
  if(S.side==='SELL'){const held=(S.ac.pos[s]||{q:0}).q,res=S.orders.filter(x=>x.s===s&&x.side==='SELL'&&['Pending','Accepted','Partial'].includes(x.st)).reduce((a,x)=>a+x.q-x.f,0);if(q>held-res)return note('Cannot sell more than you hold (no shorting)','dn')}
  S.orders.unshift({id:S.oid++,t:S.t,s,side:S.side,type:t,q,f:0,avg:0,lim,stop:stp,tif:$('#otif').value,st:'Pending'});note('Order submitted: '+S.side+' '+q+' '+s+' '+t,'');save()}
 const TN={MKT:'MKT',LMT:'LMT',STP:'STP',STPLMT:'STP LMT'};
-function save(){try{localStorage.setItem('pt1',JSON.stringify({ac:S.ac,orders:S.orders,trades:S.trades,watch:S.watch,dr:S.dr,ind:S.ind,sel:S.sel,oid:S.oid,log:S.log.slice(0,50)}))}catch(e){}}
+const GF='tel-aviv-terminal-save.json',dst=m=>$('#dst').textContent=m;
+function snap(){return {ac:S.ac,orders:S.orders,trades:S.trades,watch:S.watch,dr:S.dr,ind:S.ind,sel:S.sel,oid:S.oid,log:S.log.slice(0,50)}}
+function save(){try{localStorage.setItem('pt1',JSON.stringify(snap()))}catch(e){}}
+function apply(d){if(!d||!d.ac||!SY[d.sel||'AAPL'])throw 0;Object.assign(S,d);S.dayEq=equity();S.eq=[equity()];save();hdr();ui(true)}
 function load(){try{const d=JSON.parse(localStorage.getItem('pt1')||'null');if(d)Object.assign(S,d)}catch(e){}}
 /* ---------- chart ---------- */
 const cv=$('#cv'),cx=cv.getContext('2d'),V={vis:100,off:0,tf:1,type:'c',mx:null,my:null,dg:null,tool:'',pend:null},L={};
@@ -127,24 +191,24 @@ const TFS=[['1m',1],['5m',5],['15m',15],['30m',30],['1h',60],['4h',240],['1D',14
 function bars(){const tf=V.tf,out=[];let c=null;for(const k of S.cd[S.sel]){const key=Math.floor(k.t/tf);if(!c||c.k!==key){c={k,o:k.o,h:k.h,l:k.l,c:k.c,v:k.v,t:k.t};out.push(c)}else{c.h=Math.max(c.h,k.h);c.l=Math.min(c.l,k.l);c.c=k.c;c.v+=k.v}}return out.map(b=>b)}
 const sma=(a,n)=>a.map((_,i)=>i<n-1?null:a.slice(i-n+1,i+1).reduce((x,y)=>x+y,0)/n);
 function ema(a,n){const k=2/(n+1);let e=a[0];return a.map(v=>e=v*k+e*(1-k))}
-function draw(){const dpr=devicePixelRatio||1,R=cv.parentElement.getBoundingClientRect(),W=R.width,H=R.height;if(!W)return;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);cx.fillStyle='#0a0c0f';cx.fillRect(0,0,W,H);
+function draw(){const dpr=devicePixelRatio||1,R=cv.parentElement.getBoundingClientRect(),W=R.width,H=R.height;if(!W)return;cv.width=W*dpr;cv.height=H*dpr;cx.setTransform(dpr,0,0,dpr,0,0);const dark=!document.body.classList.contains('light');const C=dark?{bg:'#0f1720',grid:'#293747',text:'#8fa1b7',up:'#28c77a',dn:'#ff5c68',blue:'#6ea8ff',price:'#6ea8ff',axis:'#8fa1b7'}:{bg:'#ffffff',grid:'#e6ecf6',text:'#5a6f96',up:'#14935a',dn:'#d12f3a',blue:'#0038b8',price:'#0038b8',axis:'#5a6f96'};cx.fillStyle=C.bg;cx.fillRect(0,0,W,H);
  const B=bars(),n=B.length,ax=54,pw=W-ax,ph=(H-18)*.78,vt=ph+4,vh=H-18-vt;V.off=Math.max(0,Math.min(V.off,n-5));const r=n-1-V.off,l=r-V.vis+1,bw=pw/V.vis,i0=Math.max(0,Math.floor(l)),i1=Math.min(n-1,r);
  let hi=-1e9,lo=1e9,vm=0;for(let i=i0;i<=i1;i++){hi=Math.max(hi,B[i].h);lo=Math.min(lo,B[i].l);vm=Math.max(vm,B[i].v)}const pd=(hi-lo)*.08||1;hi+=pd;lo-=pd;
  const y=p=>(hi-p)/(hi-lo)*ph,x=i=>(i-l+.5)*bw,k0=B[0].k;Object.assign(L,{hi,lo,ph,bw,l,k0,pw,B});
- cx.font='10px IBM Plex Mono,monospace';cx.textBaseline='middle';cx.strokeStyle='#1a2029';cx.fillStyle='#6c7787';
+ cx.font='10px IBM Plex Mono,monospace';cx.textBaseline='middle';cx.strokeStyle=C.grid;cx.fillStyle=C.text;
  for(let j=0;j<=6;j++){const p=lo+(hi-lo)*j/6,yy=y(p);cx.beginPath();cx.moveTo(0,yy);cx.lineTo(pw,yy);cx.stroke();cx.fillText(f2(p),pw+4,yy)}
  cx.textBaseline='top';const step=Math.max(1,Math.round(90/bw));for(let i=Math.max(0,Math.ceil(l));i<=i1;i++)if(i%step===0){const xx=x(i);cx.beginPath();cx.moveTo(xx,0);cx.lineTo(xx,H-18);cx.stroke();const tt=B[i].k*V.tf;cx.fillText(V.tf>=1440?fD(tt):fT(tt),xx-12,H-14)}
- for(let i=i0;i<=i1;i++){const b=B[i],u=b.c>=b.o,col=u?'#2fbf71':'#e5484d',xx=x(i);cx.fillStyle=col+'88';const vv=b.v/vm*vh;cx.fillRect(xx-bw*.35,vt+vh-vv,Math.max(1,bw*.7),vv)}
- cx.lineWidth=1;if(V.type==='l'||V.type==='a'){cx.beginPath();for(let i=i0;i<=i1;i++){const xx=x(i),yy=y(B[i].c);i===i0?cx.moveTo(xx,yy):cx.lineTo(xx,yy)}cx.strokeStyle='#4c8dff';cx.lineWidth=1.5;if(V.type==='a'){cx.stroke();cx.lineTo(x(i1),ph);cx.lineTo(x(i0),ph);cx.fillStyle='#4c8dff22';cx.fill()}else cx.stroke();cx.lineWidth=1}
- else for(let i=i0;i<=i1;i++){const b=B[i],u=b.c>=b.o,xx=x(i);cx.strokeStyle=cx.fillStyle=u?'#2fbf71':'#e5484d';cx.beginPath();cx.moveTo(xx,y(b.h));cx.lineTo(xx,y(b.l));cx.stroke();if(V.type==='c'){const t=y(Math.max(b.o,b.c)),h=Math.max(1,Math.abs(y(b.o)-y(b.c)));cx.fillRect(xx-bw*.35,t,Math.max(1,bw*.7),h)}else{cx.beginPath();cx.moveTo(xx-bw*.35,y(b.o));cx.lineTo(xx,y(b.o));cx.moveTo(xx,y(b.c));cx.lineTo(xx+bw*.35,y(b.c));cx.stroke()}}
+ for(let i=i0;i<=i1;i++){const b=B[i],u=b.c>=b.o,col=u?C.up:C.dn,xx=x(i);cx.fillStyle=col+'88';const vv=b.v/vm*vh;cx.fillRect(xx-bw*.35,vt+vh-vv,Math.max(1,bw*.7),vv)}
+ cx.lineWidth=1;if(V.type==='l'||V.type==='a'){cx.beginPath();for(let i=i0;i<=i1;i++){const xx=x(i),yy=y(B[i].c);i===i0?cx.moveTo(xx,yy):cx.lineTo(xx,yy)}cx.strokeStyle=C.blue;cx.lineWidth=1.5;if(V.type==='a'){cx.stroke();cx.lineTo(x(i1),ph);cx.lineTo(x(i0),ph);cx.fillStyle=dark?'#6ea8ff22':'#0038b822';cx.fill()}else cx.stroke();cx.lineWidth=1}
+ else for(let i=i0;i<=i1;i++){const b=B[i],u=b.c>=b.o,xx=x(i);cx.strokeStyle=cx.fillStyle=u?C.up:C.dn;cx.beginPath();cx.moveTo(xx,y(b.h));cx.lineTo(xx,y(b.l));cx.stroke();if(V.type==='c'){const t=y(Math.max(b.o,b.c)),h=Math.max(1,Math.abs(y(b.o)-y(b.c)));cx.fillRect(xx-bw*.35,t,Math.max(1,bw*.7),h)}else{cx.beginPath();cx.moveTo(xx-bw*.35,y(b.o));cx.lineTo(xx,y(b.o));cx.moveTo(xx,y(b.c));cx.lineTo(xx+bw*.35,y(b.c));cx.stroke()}}
  const cl=B.map(b=>b.c),line=(a,c)=>{cx.beginPath();cx.strokeStyle=c;let st=false;for(let i=i0;i<=i1;i++){if(a[i]==null)continue;st?cx.lineTo(x(i),y(a[i])):cx.moveTo(x(i),y(a[i]));st=true}cx.stroke()};
  if(S.ind.sma)line(sma(cl,20),'#e0a526');if(S.ind.ema)line(ema(cl,50),'#b46bff');
  if(S.ind.bb){const m=sma(cl,20),sd=cl.map((_,i)=>i<19?null:Math.sqrt(cl.slice(i-19,i+1).reduce((a,v)=>a+(v-m[i])**2,0)/20));line(m,'#6c7787');line(m.map((v,i)=>v==null?null:v+2*sd[i]),'#4c8dff88');line(m.map((v,i)=>v==null?null:v-2*sd[i]),'#4c8dff88')}
  if(S.ind.vwap){let pv=0,vv=0;line(B.map(b=>{pv+=(b.h+b.l+b.c)/3*b.v;vv+=b.v;return pv/vv}),'#26c6da')}
- const px=S.mk[S.sel].px,py=y(px);cx.strokeStyle='#e0a52688';cx.setLineDash([3,3]);cx.beginPath();cx.moveTo(0,py);cx.lineTo(pw,py);cx.stroke();cx.setLineDash([]);cx.fillStyle='#e0a526';cx.fillRect(pw,py-8,ax,16);cx.fillStyle='#000';cx.textBaseline='middle';cx.fillText(f2(px),pw+4,py);
+ const px=S.mk[S.sel].px,py=y(px);cx.strokeStyle=dark?'#6ea8ff88':'#0038b888';cx.setLineDash([3,3]);cx.beginPath();cx.moveTo(0,py);cx.lineTo(pw,py);cx.stroke();cx.setLineDash([]);cx.fillStyle=C.price;cx.fillRect(pw,py-8,ax,16);cx.fillStyle='#fff';cx.textBaseline='middle';cx.fillText(f2(px),pw+4,py);
  const X=t=>(t/V.tf-k0-l)*bw,Y=p=>y(p);cx.strokeStyle='#e0a526';cx.lineWidth=1.2;for(const d of S.dr[S.sel]||[]){cx.beginPath();if(d.y==='h'){cx.moveTo(0,Y(d.p));cx.lineTo(pw,Y(d.p));cx.stroke();cx.fillStyle='#e0a526';cx.fillText(f2(d.p),4,Y(d.p)-7)}else{cx.moveTo(X(d.a.t),Y(d.a.p));cx.lineTo(X(d.b.t),Y(d.b.p));cx.stroke()}}
  if(V.pend&&V.mx!=null){cx.beginPath();cx.moveTo(X(V.pend.t),Y(V.pend.p));cx.lineTo(V.mx,V.my);cx.stroke()}cx.lineWidth=1;
- const oh=$('#ohlc');let b=B[n-1];if(V.mx!=null&&V.mx<pw){const i=Math.round(V.mx/bw+l-.5);if(B[i])b=B[i];cx.strokeStyle='#6c778766';cx.setLineDash([2,3]);cx.beginPath();cx.moveTo(V.mx,0);cx.lineTo(V.mx,H-18);cx.moveTo(0,V.my);cx.lineTo(pw,V.my);cx.stroke();cx.setLineDash([]);if(V.my<ph){cx.fillStyle='#2a323d';cx.fillRect(pw,V.my-8,ax,16);cx.fillStyle='#fff';cx.fillText(f2(hi-V.my/ph*(hi-lo)),pw+4,V.my)}}
+ const oh=$('#ohlc');let b=B[n-1];if(V.mx!=null&&V.mx<pw){const i=Math.round(V.mx/bw+l-.5);if(B[i])b=B[i];cx.strokeStyle='#6c778766';cx.setLineDash([2,3]);cx.beginPath();cx.moveTo(V.mx,0);cx.lineTo(V.mx,H-18);cx.moveTo(0,V.my);cx.lineTo(pw,V.my);cx.stroke();cx.setLineDash([]);if(V.my<ph){cx.fillStyle=dark?'#2a323d':'#dce8fa';cx.fillRect(pw,V.my-8,ax,16);cx.fillStyle='#fff';cx.fillText(f2(hi-V.my/ph*(hi-lo)),pw+4,V.my)}}
  oh.innerHTML=S.sel+' '+(V.tf>=1440?fD(b.k*V.tf):fT(b.k*V.tf))+' O <span class="'+(b.c>=b.o?'up':'dn')+'">'+f2(b.o)+'</span> H '+f2(b.h)+' L '+f2(b.l)+' C '+f2(b.c)+' Vol '+fm(b.v)+(S.ind.sma?' <span style="color:#e0a526">SMA20</span>':'')+(S.ind.ema?' <span style="color:#b46bff">EMA50</span>':'')}
 cv.addEventListener('wheel',e=>{e.preventDefault();V.vis=Math.max(15,Math.min(600,V.vis*(e.deltaY>0?1.12:.89)))},{passive:false});
 cv.addEventListener('mousedown',e=>{V.dg={x:e.offsetX,off:V.off}});addEventListener('mouseup',()=>V.dg=null);
@@ -152,7 +216,7 @@ cv.addEventListener('mousemove',e=>{V.mx=e.offsetX;V.my=e.offsetY;if(V.dg&&!V.to
 cv.addEventListener('dblclick',()=>{V.vis=100;V.off=0;draw()});
 cv.addEventListener('click',e=>{if(!V.tool||e.offsetX>L.pw||e.offsetY>L.ph)return;const p=L.hi-e.offsetY/L.ph*(L.hi-L.lo),t=(e.offsetX/L.bw+L.l+L.k0)*V.tf,d=S.dr[S.sel]||(S.dr[S.sel]=[]);
  if(V.tool==='h'){d.push({y:'h',p});V.tool=''}else if(!V.pend)V.pend={t,p};else{d.push({y:'t',a:V.pend,b:{t,p}});V.pend=null;V.tool=''}save();hdr();draw()});
-function hdr(){$('#cht').innerHTML=Object.keys(SY).map(s=>`<button data-s="${s}" class="${s===S.sel?'on':''}">${s}</button>`).join('')+'<span style="width:6px"></span>'+TFS.map(t=>`<button data-tf="${t[1]}" class="${V.tf===t[1]?'on':''}">${t[0]}</button>`).join('')+'<span style="width:6px"></span>'+[['c','Candles'],['o','OHLC'],['l','Line'],['a','Area']].map(t=>`<button data-ty="${t[0]}" class="${V.type===t[0]?'on':''}">${t[1]}</button>`).join('')+'<span style="width:6px"></span>'+[['sma','SMA20'],['ema','EMA50'],['bb','BB'],['vwap','VWAP']].map(t=>`<button data-in="${t[0]}" class="${S.ind[t[0]]?'on':''}">${t[1]}</button>`).join('')+'<span style="width:6px"></span>'+`<button data-tl="h" class="${V.tool==='h'?'on':''}">H-line</button><button data-tl="t" class="${V.tool==='t'?'on':''}">Trend</button><button data-tl="u">Undo</button><button data-tl="c">Clear</button><button data-tl="r">Reset view</button>`}
+function hdr(){$('#cht').innerHTML='<span class="pname">Chart</span><span class="pctrl"><button class="pmin" title="Minimize panel">−</button><button class="pswap" title="Swap panel">↔</button></span>'+Object.keys(SY).map(s=>`<button data-s="${s}" class="${s===S.sel?'on':''}">${s}</button>`).join('')+'<span style="width:6px"></span>'+TFS.map(t=>`<button data-tf="${t[1]}" class="${V.tf===t[1]?'on':''}">${t[0]}</button>`).join('')+'<span style="width:6px"></span>'+[['c','Candles'],['o','OHLC'],['l','Line'],['a','Area']].map(t=>`<button data-ty="${t[0]}" class="${V.type===t[0]?'on':''}">${t[1]}</button>`).join('')+'<span style="width:6px"></span>'+[['sma','SMA20'],['ema','EMA50'],['bb','BB'],['vwap','VWAP']].map(t=>`<button data-in="${t[0]}" class="${S.ind[t[0]]?'on':''}">${t[1]}</button>`).join('')+'<span style="width:6px"></span>'+`<button data-tl="h" class="${V.tool==='h'?'on':''}">H-line</button><button data-tl="t" class="${V.tool==='t'?'on':''}">Trend</button><button data-tl="u">Undo</button><button data-tl="c">Clear</button><button data-tl="r">Reset view</button>`}
 $('#cht').addEventListener('click',e=>{const d=e.target.dataset;if(d.s)pick(d.s);if(d.tf)V.tf=+d.tf;if(d.ty)V.type=d.ty;if(d.in)S.ind[d.in]=!S.ind[d.in];if(d.tl){const a=S.dr[S.sel]||(S.dr[S.sel]=[]);if(d.tl==='h'||d.tl==='t'){V.tool=V.tool===d.tl?'':d.tl;V.pend=null}if(d.tl==='u')a.pop();if(d.tl==='c')S.dr[S.sel]=[];if(d.tl==='r'){V.vis=100;V.off=0}}save();hdr();draw()});
 /* ---------- panels ---------- */
 function pick(s){S.sel=s;V.pend=null;$('#ol').value='';$('#os').value='';save();hdr();ui(true)}
@@ -161,15 +225,15 @@ function ui(full){const o=S.mk[S.sel],ch=o.px-o.prev,pc=ch/o.prev*100,u=ch>=0?'u
  $('#oes').textContent=S.sel;$('#obid').textContent=f2(o.bid);$('#oask').textContent=f2(o.ask);const p=S.ac.pos[S.sel];$('#oepos').textContent='Position '+(p?p.q:0);
  const t=$('#ot').value;$('#ol').disabled=!(t==='LMT'||t==='STPLMT');$('#os').disabled=!(t==='STP'||t==='STPLMT');const q=+$('#oq').value||0,ref=t==='MKT'?o.ask:(+$('#ol').value||+$('#os').value||o.ask);$('#oev').textContent=$$(q*ref);$('#oec').textContent=$$(q*.005);{const sr=t==='MKT'?o.bid:ref,pe=p?(sr-p.avg)*Math.min(q,p.q)-q*.005:null;$('#oep').textContent=S.side==='SELL'&&pe!=null?sg(pe):'—';$('#oep').className=pe!=null&&pe<0?'dn':'up'}
  $('#wt').innerHTML='<tr><th>Symbol</th><th>Last</th><th>Change</th><th>Chg %</th><th>Volume</th><th>Avg Vol</th><th>Mkt Cap</th><th></th></tr>'+S.watch.map(s=>{const m=S.mk[s],c=m.px-m.prev,k=c>=0?'up':'dn';return `<tr class="row ${s===S.sel?'sel':''}" data-s="${s}"><td><b>${s}</b></td><td class="r">${f2(m.px)}</td><td class="r ${c>=0?'cu':'cd'}">${fs(c)}</td><td class="r ${c>=0?'cu':'cd'}">${fs(c/m.prev*100)}%</td><td class="r">${fm(m.vol)}</td><td class="r">${fm(SY[s].avg)}</td><td class="r">$${fm(m.px*SY[s].sh)}</td><td class="x" data-rm="${s}">×</td></tr>`}).join('')||'<tr><td class="empty" colspan=8>Watchlist empty. Add AAPL, MSFT or NVDA.</td></tr>';
- const I=SY[S.sel];$('#is').textContent=S.sel+' · '+I.n+' (fictional)';$('#ib').innerHTML=`<div class="n" style="font-size:20px;color:#fff">${f2(o.px)}</div><div class="n ${u}">${fs(ch)} ${fs(pc)}%</div><div style="height:4px"></div>`+
+ const I=SY[S.sel];$('#is').textContent=S.sel+' · '+I.n+' (fictional)';$('#ib').innerHTML=`<div class="n" style="font-size:20px;color:#0038b8">${f2(o.px)}</div><div class="n ${u}">${fs(ch)} ${fs(pc)}%</div><div style="height:4px"></div>`+
   [['Bid',f2(o.bid)+' × '+o.bs],['Ask',f2(o.ask)+' × '+o.as],['Spread',f2(o.ask-o.bid)],['Open',f2(o.open)],['Prev close',f2(o.prev)],['Today high',f2(o.hi)],['Today low',f2(o.lo)],['52 wk high',f2(o.h52)],['52 wk low',f2(o.l52)],['Volume',fm(o.vol)]].map(a=>`<div class="kv n"><span>${a[0]}</span><span>${a[1]}</span></div>`).join('')+
   '<div class="sec">Earnings</div>'+[['EPS',f2(I.eps)],['P/E',f2(o.px/I.eps)]].map(a=>`<div class="kv n"><span>${a[0]}</span><span>${a[1]}</span></div>`).join('')+'<div class="sec">Valuation</div>'+[['Market cap','$'+fm(o.px*I.sh)],['Price/Book',f2(o.px/I.bv)]].map(a=>`<div class="kv n"><span>${a[0]}</span><span>${a[1]}</span></div>`).join('')+`<div class="sec">IV/OI</div><div class="kv n"><span>Opt open int</span><span>${fm(o.oi)}</span></div>`;
  $('#nb').innerHTML=S.news.map(n=>`<div><time class="n">${fT(n.t)}</time><span>${n.m}</span></div>`).join('')||'<div class="empty">No simulated headlines yet.</div>';
  let un=0,rows='';for(const s in S.ac.pos){const p=S.ac.pos[s],m=S.mk[s].px,pl=(m-p.avg)*p.q;un+=pl;rows+=`<tr><td><b>${s}</b></td><td class="r">${p.q}</td><td class="r">${f2(p.avg)}</td><td class="r">${f2(m)}</td><td class="r ${pl>=0?'up':'dn'}">${fs(pl)}</td><td class="r">${f2(p.q*m/equity()*100)}%</td></tr>`}
  const eq=equity(),e=S.eq,mn=Math.min(...e),mx=Math.max(...e)||1,spk=e.length>1?e.map((v,i)=>(i/(e.length-1)*200).toFixed(1)+','+(24-(v-mn)/((mx-mn)||1)*22).toFixed(1)).join(' '):'';
- $('#pb').innerHTML=`<div class="kv n"><span>Equity</span><span>${$$(eq)}</span></div><div class="kv n"><span>Cash / buying power</span><span>${$$(S.ac.cash)}</span></div><div class="kv n"><span>Unrealized P/L</span><span class="${un>=0?'up':'dn'}">${$$(un)}</span></div><div class="kv n"><span>Realized P/L</span><span class="${S.ac.real>=0?'up':'dn'}">${$$(S.ac.real)}</span></div><div class="kv n"><span>Day P/L</span><span class="${eq>=S.dayEq?'up':'dn'}">${$$(eq-S.dayEq)}</span></div><div class="kv n"><span>Total return</span><span class="${eq>=1e5?'up':'dn'}">${fs((eq/1e5-1)*100)}%</span></div><svg viewBox="0 0 200 26" preserveAspectRatio="none" style="width:100%;height:26px;margin:3px 0"><polyline fill="none" stroke="#4c8dff" stroke-width="1" points="${spk}"/></svg><table><tr><th>Pos</th><th>Qty</th><th>Avg</th><th>Last</th><th>P/L</th><th>%</th></tr>${rows||'<tr><td class="empty" colspan=6>No open positions.</td></tr>'}</table>`;
+ $('#pb').innerHTML=`<div class="kv n"><span>Equity</span><span>${$$(eq)}</span></div><div class="kv n"><span>Cash / buying power</span><span>${$$(S.ac.cash)}</span></div><div class="kv n"><span>Unrealized P/L</span><span class="${un>=0?'up':'dn'}">${$$(un)}</span></div><div class="kv n"><span>Realized P/L</span><span class="${S.ac.real>=0?'up':'dn'}">${$$(S.ac.real)}</span></div><div class="kv n"><span>Day P/L</span><span class="${eq>=S.dayEq?'up':'dn'}">${$$(eq-S.dayEq)}</span></div><div class="kv n"><span>Total return</span><span class="${eq>=1e5?'up':'dn'}">${fs((eq/1e5-1)*100)}%</span></div><svg viewBox="0 0 200 26" preserveAspectRatio="none" style="width:100%;height:26px;margin:3px 0"><polyline fill="none" stroke="#0038b8" stroke-width="1" points="${spk}"/></svg><table><tr><th>Pos</th><th>Qty</th><th>Avg</th><th>Last</th><th>P/L</th><th>%</th></tr>${rows||'<tr><td class="empty" colspan=6>No open positions.</td></tr>'}</table>`;
  let h='';const OP=['Pending','Accepted','Partial'];
- if(S.tab==='o')h='<table><tr><th>Time</th><th>Symbol</th><th>Side</th><th>Type</th><th>Qty</th><th>Filled</th><th>Price</th><th>Status</th><th>Profit</th><th></th></tr>'+S.orders.map(o=>`<tr><td class="r">${fT(o.t)}</td><td>${o.s}</td><td class="${o.side==='BUY'?'up':'dn'}">${o.side}</td><td>${TN[o.type]}</td><td class="r">${o.q}</td><td class="r">${o.f}</td><td class="r">${o.f?f2(o.avg):(o.lim||o.stop?f2(o.lim||o.stop):'MKT')}</td><td>${o.st}</td><td class="r ${(o.pl||0)>=0?'up':'dn'}">${o.side==='SELL'&&o.f?sg(o.pl||0):''}</td><td>${OP.includes(o.st)?`<button data-c="${o.id}" style="height:17px;background:#5a1a1d">Cancel</button>`:''}</td></tr>`).join('')+'</table>'+(S.orders.length?'':'<div class="empty">No orders yet. Use Order entry to submit one.</div>');
+ if(S.tab==='o')h='<table><tr><th>Time</th><th>Symbol</th><th>Side</th><th>Type</th><th>Qty</th><th>Filled</th><th>Price</th><th>Status</th><th>Profit</th><th></th></tr>'+S.orders.map(o=>`<tr><td class="r">${fT(o.t)}</td><td>${o.s}</td><td class="${o.side==='BUY'?'up':'dn'}">${o.side}</td><td>${TN[o.type]}</td><td class="r">${o.q}</td><td class="r">${o.f}</td><td class="r">${o.f?f2(o.avg):(o.lim||o.stop?f2(o.lim||o.stop):'MKT')}</td><td>${o.st}</td><td class="r ${(o.pl||0)>=0?'up':'dn'}">${o.side==='SELL'&&o.f?sg(o.pl||0):''}</td><td>${OP.includes(o.st)?`<button data-c="${o.id}" style="height:17px;background:#fbe1e3;color:#d12f3a">Cancel</button>`:''}</td></tr>`).join('')+'</table>'+(S.orders.length?'':'<div class="empty">No orders yet. Use Order entry to submit one.</div>');
  if(S.tab==='t')h='<table><tr><th>Time</th><th>Symbol</th><th>Side</th><th>Qty</th><th>Price</th><th>Commission</th><th>Profit</th><th>Order #</th></tr>'+S.trades.map(o=>`<tr><td class="r">${fT(o.t)}</td><td>${o.s}</td><td class="${o.side==='BUY'?'up':'dn'}">${o.side}</td><td class="r">${o.q}</td><td class="r">${f2(o.px)}</td><td class="r">${f2(o.c)}</td><td class="r ${(o.pl||0)>=0?'up':'dn'}">${o.pl!=null?sg(o.pl):''}</td><td class="r">${o.id}</td></tr>`).join('')+'</table>'+(S.trades.length?(()=>{const t=S.trades.reduce((a,x)=>a+(x.pl||0),0);return `<div class="kv n" style="padding:3px 8px"><span>Total profit from sold shares (after commission)</span><span class="${t>=0?'up':'dn'}">${sg(t)}</span></div>`})():'<div class="empty">No fills yet.</div>');
  if(S.tab==='a')h=S.log.map(o=>`<div class="kv n" style="padding:2px 8px"><span style="color:var(--tx)">${o.m}</span><span>${fT(o.t)}</span></div>`).join('')||'<div class="empty">No activity yet.</div>';
  const ab=$('#ab');if(ab.dataset.h!==h){ab.innerHTML=h;ab.dataset.h=h}draw()}
@@ -177,13 +241,16 @@ $('#wt').addEventListener('click',e=>{const d=e.target.dataset;if(d.rm){S.watch=
 $('#wa').addEventListener('keydown',e=>{if(e.key!=='Enter')return;const s=e.target.value.trim().toUpperCase();if(!SY[s])return note('Unknown simulated symbol: '+s,'dn');if(!S.watch.includes(s))S.watch.push(s);e.target.value='';save();ui()});
 $('#ab').addEventListener('click',e=>{const id=e.target.dataset.c;if(id){const o=S.orders.find(x=>x.id==id);if(o){o.st='Cancelled';note('Order cancelled: '+o.side+' '+o.s,'am');ui()}}});
 $('#tabs').addEventListener('click',e=>{if(e.target.dataset.t){S.tab=e.target.dataset.t;document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b===e.target));ui()}});
+function setBalance(v){v=Number(v);if(!Number.isFinite(v)||v<0){note('Enter a valid non-negative balance','dn');return}S.ac={cash:v,pos:{},real:0};S.orders=[];S.trades=[];S.dayEq=v;S.eq=[v];save();ui();note('Virtual balance set to '+$$(v),'am')}
+function setTheme(dark){document.body.classList.toggle('light',!dark);document.documentElement.dataset.theme=dark?'dark':'light';$('#theme').textContent=dark?'Light Mode':'Dark Mode';localStorage.setItem('terminalTheme',dark?'dark':'light');draw()}
 const setSide=s=>{S.side=s;$('#bb').classList.toggle('on',s==='BUY');$('#bs').classList.toggle('on',s==='SELL');$('#sub').className='sub '+s[0];$('#sub').textContent='Submit '+(s==='BUY'?'Buy':'Sell')};
 $('#bb').onclick=()=>setSide('BUY');$('#bs').onclick=()=>setSide('SELL');$('#sub').onclick=()=>{submit();ui()};
 $('#obid').onclick=()=>{$('#ol').value=S.mk[S.sel].bid};$('#oask').onclick=()=>{$('#ol').value=S.mk[S.sel].ask};
 ['oq','ot','ol','os'].forEach(i=>$('#'+i).addEventListener('input',()=>ui()));
 $('#spd').onchange=e=>S.speed=+e.target.value;const pz=()=>{S.paused=!S.paused;$('#pz').textContent=S.paused?'Resume':'Pause'};$('#pz').onclick=pz;
 $('#nd').onclick=()=>{S.orders.forEach(o=>{if(o.tif==='DAY'&&['Pending','Accepted','Partial'].includes(o.st))o.st='Cancelled'});S.t=(Math.floor(S.t/1440)+1)*1440+570;for(const s in S.mk){const o=S.mk[s];o.prev=o.open=o.hi=o.lo=o.px;o.vol=0}S.dayEq=equity();note('New simulated trading day','');ui()};
-$('#rs').onclick=()=>{initMk();note('Market reset','am');ui()};$('#ra').onclick=()=>{if(!confirm('Reset account to $100,000 virtual cash?'))return;S.ac={cash:1e5,pos:{},real:0};S.orders=[];S.trades=[];S.dayEq=1e5;S.eq=[1e5];save();ui()};
+$('#rs').onclick=()=>{initMk();note('Market reset','am');ui()};$('#ra').onclick=()=>{if(!confirm('Reset account to $100,000 virtual cash?'))return;S.ac={cash:1e5,pos:{},real:0};S.orders=[];S.trades=[];S.dayEq=1e5;S.eq=[1e5];$('#bal').value='100000.00';save();ui()};
+$('#setbal').onclick=()=>setBalance($('#bal').value);$('#bal').addEventListener('keydown',e=>{if(e.key==='Enter')setBalance(e.target.value)});$('#theme').onclick=()=>setTheme(document.body.classList.contains('light'));
 $('#q').addEventListener('input',e=>{const v=e.target.value.toLowerCase(),m=Object.keys(SY).filter(s=>v&&(s.toLowerCase().includes(v)||SY[s].n.toLowerCase().includes(v)));$('#qr').textContent=m.join(' ')});
 $('#q').addEventListener('keydown',e=>{if(e.key==='Enter'){const v=e.target.value.toLowerCase(),m=Object.keys(SY).find(s=>s.toLowerCase().includes(v)||SY[s].n.toLowerCase().includes(v));if(m){pick(m);e.target.value='';$('#qr').textContent=''}else note('No simulated match','dn')}});
 const ev=(n,fn)=>{const b=document.createElement('button');b.textContent=n;b.onclick=()=>{fn();ui()};$('#oe .hd').parentNode.querySelector('.bd').appendChild(b);b.style.cssText='margin:4px 3px 0 0;height:19px;font-size:10px'};
@@ -191,10 +258,17 @@ const E=(m,t,c)=>{note(m,c);newsAdd(m)};
 ev('Bullish',()=>{S.mk[S.sel].tr+=.0006;E(S.sel+' bullish event (simulated)','','up')});ev('Bearish',()=>{S.mk[S.sel].tr-=.0006;E(S.sel+' bearish event (simulated)','','dn')});
 ev('Rally',()=>{S.mt+=.0005;E('Market-wide rally (simulated)','','up')});ev('Selloff',()=>{S.mt-=.0005;E('Market-wide selloff (simulated)','','dn')});
 ev('Vol ↑',()=>{S.vm=Math.min(4,S.vm*1.8);E('Simulated volatility rising','','am')});ev('Vol ↓',()=>{S.vm=Math.max(.3,S.vm/1.8);E('Simulated volatility easing','','am')});
-addEventListener('keydown',e=>{const inp=/INPUT|SELECT/.test(document.activeElement.tagName);if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();$('#q').focus();return}if(e.key==='Escape')document.activeElement.blur();if(inp)return;
+addEventListener('keydown',e=>{const inp=/INPUT|SELECT/.test(document.activeElement.tagName);if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();$('#q').focus();return}if(e.key==='Escape'){document.activeElement.blur();$('#dm').hidden=true}if(inp)return;
  if(e.key===' '){e.preventDefault();pz()}if(e.key==='+'||e.key==='='){V.vis=Math.max(15,V.vis*.85);draw()}if(e.key==='-'){V.vis=Math.min(600,V.vis/.85);draw()}});
 addEventListener('resize',draw);
-load();initMk();S.dayEq=equity();hdr();setSide('BUY');['AAPL','MSFT','NVDA'].forEach(s=>{if(!S.dr[s])S.dr[s]=[]});
+$('#dt').onclick=()=>{const m=$('#dm');m.hidden=!m.hidden;$('#tok').value=localStorage.getItem('pt1tok')||'';$('#gid').value=localStorage.getItem('pt1gid')||''};
+$('#ex').onclick=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(snap(),null,1)],{type:'application/json'}));a.download=GF;a.click();dst('Save file downloaded.')};
+$('#im').onclick=()=>$('#imf').click();
+$('#imf').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{apply(JSON.parse(t));dst('Imported '+f.name+'.')}).catch(()=>dst('That is not a valid save file.'));e.target.value=''};
+async function gh(m,u,b){const r=await fetch('https://api.github.com'+u,{method:m,headers:{Authorization:'Bearer '+$('#tok').value.trim(),Accept:'application/vnd.github+json'},body:b?JSON.stringify(b):undefined});if(!r.ok)throw new Error('HTTP '+r.status);return r.json()}
+$('#cs').onclick=async()=>{try{if(!$('#tok').value.trim())return dst('Paste a GitHub token first.');localStorage.setItem('pt1tok',$('#tok').value.trim());const body={files:{[GF]:{content:JSON.stringify(snap())}}},id=$('#gid').value.trim();const j=id?await gh('PATCH','/gists/'+id,body):await gh('POST','/gists',{description:'Tel-Aviv Terminal save',public:false,...body});$('#gid').value=j.id;localStorage.setItem('pt1gid',j.id);dst('Saved to cloud. Gist ID: '+j.id);note('Saved to your private Gist','up')}catch(e){dst('Cloud save failed ('+e.message+'). Check the token and Gist ID.')}};
+$('#cl').onclick=async()=>{try{const id=$('#gid').value.trim();if(!id||!$('#tok').value.trim())return dst('Enter your token and Gist ID.');localStorage.setItem('pt1tok',$('#tok').value.trim());const j=await gh('GET','/gists/'+id);apply(JSON.parse(j.files[GF].content));localStorage.setItem('pt1gid',id);dst('Loaded from cloud.')}catch(e){dst('Cloud load failed ('+(e.message||'bad data')+').')}};
+initPanels();load();initMk();S.dayEq=equity();$('#bal').value=S.ac.cash.toFixed(2);setTheme(localStorage.getItem('terminalTheme')!=='light');hdr();setSide('BUY');['AAPL','MSFT','NVDA'].forEach(s=>{if(!S.dr[s])S.dr[s]=[]});
 if(!S.news.length)['NVDA rises following simulated semiconductor demand update','AAPL trades higher during simulated market session','MSFT sees increased simulated trading volume','Technology sector moves higher in simulated market'].forEach(m=>newsAdd(m));
 ui(true);
 setInterval(()=>{if(S.paused)return;for(let i=0;i<S.speed;i++)step();ui()},250);
